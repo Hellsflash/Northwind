@@ -22,3 +22,10 @@
 
 # ├── Northwind.Web/        Blazor Web App, server-rendered 
 
+# ```
+
+## Scope:
+
+# Minimal API endpoints:
+- `GET /api/customers?search={term}` 
+- `GET /api/customers/{id}`

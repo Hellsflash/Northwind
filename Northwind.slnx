@@ -3,5 +3,5 @@
     <File Path=".editorconfig" />
   </Folder>
   <Project Path="Northwind.Api/Northwind.Api.csproj" />
-  <Project Path="Northwind/Northwind.csproj" />
+  <Project Path="Northwind/Northwind.Web.csproj" />
 </Solution>

@@ -1,5 +1,5 @@
 namespace Northwind.Api.DTOs;
 
-public class CustomerDetailDto
+public class CustomerSummaryDTO
 {
 }
