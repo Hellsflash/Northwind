@@ -1,5 +1,7 @@
 namespace Northwind.Api.DTOs;
 
-public class CustomerSummaryDTO
-{
-}
+public record CustomerSummaryDTO(
+    string CustomerId,
+    string CompanyName,
+    int OrderCount
+);

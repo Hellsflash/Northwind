@@ -1,5 +1,17 @@
-﻿namespace Northwind.Api.Persistence.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 
-internal class OrderDetail
+namespace Northwind.Api.Persistence.Entities;
+
+[Table("Order Details")]
+public class OrderDetail
 {
+    [Column("OrderID")]
+    public int OrderId { get; set; }
+
+    [Column("ProductID")]
+    public int ProductId { get; set; }
+    public decimal UnitPrice { get; set; }
+    public int Quantity { get; set; }
+    public float Discount { get; set; }
+    public Order? Order { get; set; }
 }
