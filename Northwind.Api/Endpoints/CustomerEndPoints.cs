@@ -7,9 +7,9 @@ public static class CustomerEndPoints
 {
     public static void MapCustomerEndPoints(this WebApplication app)
     {
-        var group = app.MapGroup("api/customers").WithTags("Customers");
+        var group = app.MapGroup("/api/customers").WithTags("Customers");
 
-        group.Map("/", async (string? search, ICustomerService service, CancellationToken ct) =>
+        group.MapGet("/", async (string? search, ICustomerService service, CancellationToken ct) =>
         {
             var customers = await service.GetCustomersAsync(search, ct);
             return Results.Ok(customers);
@@ -26,7 +26,7 @@ public static class CustomerEndPoints
         })
         .WithName("GetCustomerDetail")
         .WithSummary("Get a single customer's details and order history.")
-        .Produces<CustomerDetailDto>(StatusCodes.Status200OK)
+        .Produces<CustomerDetailDTO>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
     }
 }

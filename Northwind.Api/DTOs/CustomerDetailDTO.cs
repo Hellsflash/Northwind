@@ -1,6 +1,6 @@
 namespace Northwind.Api.DTOs;
 
-public record CustomerDetailDto(
+public record CustomerDetailDTO(
     string CustomerId,
     string CompanyName,
     string? ContactName,

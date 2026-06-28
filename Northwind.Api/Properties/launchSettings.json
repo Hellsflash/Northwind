@@ -1,12 +1,24 @@
 {
   "profiles": {
-    "Northwind.Api": {
+    "http": {
       "commandName": "Project",
+      "dotnetRunMessages": true,
       "launchBrowser": true,
+      "launchUrl": "swagger/index.html",
+      "applicationUrl": "http://localhost:5050",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:52081;http://localhost:52082"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger/index.html",
+      "applicationUrl": "https://localhost:7050;",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }
