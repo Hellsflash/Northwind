@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Northwind.Api.Persistence.Entities;
 
@@ -10,6 +11,8 @@ public class OrderDetail
 
     [Column("ProductID")]
     public int ProductId { get; set; }
+
+    [Precision(18, 2)]
     public decimal UnitPrice { get; set; }
     public int Quantity { get; set; }
     public float Discount { get; set; }

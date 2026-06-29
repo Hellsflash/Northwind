@@ -25,6 +25,11 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.HttpsPort = 7050;
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

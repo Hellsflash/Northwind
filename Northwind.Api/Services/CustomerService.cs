@@ -8,6 +8,8 @@ namespace Northwind.Api.Services;
 public class CustomerService(NorthwindContext context) : ICustomerService
 {
     private readonly NorthwindContext _context = context;
+    private const int PriceDecimalPlaces = 2;
+    private const decimal FullPriceMultiplier = 1m;
 
     public async Task<CustomerDetailDTO?> GetCustomerDetailAsync(string customerId, CancellationToken cancellationToken)
     {
@@ -25,7 +27,7 @@ public class CustomerService(NorthwindContext context) : ICustomerService
                                      o.OrderId,
                                      o.OrderDate,
                                      Math.Round(
-                                         o.OrderDetails.Sum(od => od.UnitPrice * od.Quantity * (1 - (decimal)od.Discount)), 2),
+                                         o.OrderDetails.Sum(od => od.UnitPrice * od.Quantity * (FullPriceMultiplier - (decimal)od.Discount)), PriceDecimalPlaces),
                                          o.OrderDetails.Select(od => od.ProductId).Distinct().Count()))
                                  .ToList()))
                                  .FirstOrDefaultAsync(cancellationToken);
