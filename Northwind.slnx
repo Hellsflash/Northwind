@@ -3,5 +3,6 @@
     <File Path=".editorconfig" />
   </Folder>
   <Project Path="Northwind.Api/Northwind.Api.csproj" />
+  <Project Path="Northwind.Tests/Northwind.Tests.csproj" Id="22c6e2ae-7f2e-4c4b-99a3-846fae40fe27" />
   <Project Path="Northwind/Northwind.Web.csproj" />
 </Solution>

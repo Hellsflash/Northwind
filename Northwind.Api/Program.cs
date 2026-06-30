@@ -6,8 +6,12 @@ using Northwind.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<NorthwindContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Northwind")));
+// Skip SqlServer registration in test environments - the test factory will register InMemory
+if (!builder.Environment.IsEnvironment("Test"))
+{
+    builder.Services.AddDbContext<NorthwindContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("Northwind")));
+}
 
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 
