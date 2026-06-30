@@ -1,0 +1,87 @@
+@page "/"
+@rendermode InteractiveServer
+@inject CustomerApiClient ApiClient
+@inject NavigationManager Navigation
+
+<h1>Customers</h1>
+
+<input class="search-box"
+       type="text"
+       placeholder="Search by company name..."
+       value="@_searchTerm"
+       @oninput="OnSearchInput" />
+
+@if (_isLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else if (_customers.Count == 0)
+{
+    <p>No customers found.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Company Name</th>
+                <th>Orders</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in _customers)
+            {
+                <tr class="clickable-row" @onclick="() => GoToDetail(customer.CustomerId)">
+                    <td>@customer.CompanyName</td>
+                    <td>@customer.OrderCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IReadOnlyList<CustomerSummaryDTO> _customers = [];
+    private string _searchTerm = string.Empty;
+    private bool _isLoading = true;
+    private CancellationTokenSource? _debounceCts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCustomersAsync();
+    }
+
+    private async Task OnSearchInput(ChangeEventArgs e)
+    {
+        _searchTerm = e.Value?.ToString() ?? string.Empty;
+
+        // Debounce so we don't fire a request on every keystroke.
+        _debounceCts?.Cancel();
+        _debounceCts = new CancellationTokenSource();
+        var token = _debounceCts.Token;
+
+        try
+        {
+            await Task.Delay(300, token);
+            await LoadCustomersAsync();
+        }
+        catch (TaskCanceledException)
+        {
+            // A newer keystroke superseded this debounce — expected, ignore.
+        }
+    }
+
+    private async Task LoadCustomersAsync()
+    {
+        _isLoading = true;
+        StateHasChanged();
+
+        _customers = await ApiClient.GetCustomersAsync(_searchTerm);
+
+        _isLoading = false;
+        StateHasChanged();
+    }
+
+    private void GoToDetail(string customerId) =>
+        Navigation.NavigateTo($"/customers/{customerId}");
+}

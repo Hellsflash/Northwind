@@ -1,0 +1,72 @@
+@page "/customers/{CustomerId}"
+@rendermode InteractiveServer
+@inject CustomerApiClient ApiClient
+@inject NavigationManager Navigation
+
+@if (_isLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else if (_customer is null)
+{
+    <p>Customer "@CustomerId" was not found.</p>
+    <a href="/">&larr; Back to customers</a>
+}
+else
+{
+    <a href="/">&larr; Back to customers</a>
+
+    <h1>@_customer.CompanyName</h1>
+    <p>
+        @_customer.ContactName
+        @if (!string.IsNullOrWhiteSpace(_customer.City) || !string.IsNullOrWhiteSpace(_customer.Country))
+        {
+            <text> &mdash; @_customer.City, @_customer.Country</text>
+        }
+    </p>
+
+    <h2>Order History</h2>
+
+    @if (_customer.Orders.Count == 0)
+    {
+        <p>This customer has no orders yet.</p>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Products</th>
+                    <th>Total Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in _customer.Orders)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>@(order.OrderDate?.ToString("yyyy-MM-dd") ?? "—")</td>
+                        <td>@order.ProductCount</td>
+                        <td>@order.TotalValue.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+@code {
+    [Parameter]
+    public string CustomerId { get; set; } = string.Empty;
+
+    private CustomerDetailDTO? _customer;
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _customer = await ApiClient.GetCustomerDetailAsync(CustomerId);
+        _isLoading = false;
+    }
+}
